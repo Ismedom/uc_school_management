@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign Up - School Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="bg-gray-50 flex items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 text-blue-600 mb-4">
+                <i class="fas fa-user-plus text-xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900">Create Account</h2>
+            <p class="text-gray-500 mt-2">Join our school management system</p>
+        </div>
+
+        <div id="alert-container" class="hidden p-4 rounded-lg mb-6 text-sm flex items-center">
+            <i id="alert-icon" class="fas mr-2"></i>
+            <span id="alert-message"></span>
+        </div>
+
+        <form id="signup-form" class="space-y-6">
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                        <i class="fas fa-user"></i>
+                    </span>
+                    <input type="text" id="username" name="username" required
+                        class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
+                        placeholder="Choose a username">
+                </div>
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                    <input type="password" id="password" name="password" required
+                        class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
+                        placeholder="Choose a password">
+                </div>
+            </div>
+
+            <div>
+                <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                        <i class="fas fa-id-badge"></i>
+                    </span>
+                    <select id="role" name="role" required
+                        class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors bg-white">
+                        <option value="STUDENT">Student</option>
+                        <option value="TEACHER">Teacher</option>
+                        <option value="PARENT">Parent</option>
+                        <option value="ADMIN">Admin</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit"
+                class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                Sign Up
+            </button>
+        </form>
+
+        <div class="mt-6 text-center text-sm">
+            <span class="text-gray-600">Already have an account?</span>
+            <a th:href="@{/login}" class="font-medium text-blue-600 hover:text-blue-500 ml-1">Sign in</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = {
+                username: form.username.value,
+                password: form.password.value,
+                role: form.role.value
+            };
+
+            const alertContainer = document.getElementById('alert-container');
+            const alertMessage = document.getElementById('alert-message');
+            const alertIcon = document.getElementById('alert-icon');
+
+            try {
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    // Success
+                    alertContainer.className = "bg-green-50 text-green-600 p-4 rounded-lg mb-6 text-sm flex items-center";
+                    alertIcon.className = "fas fa-check-circle mr-2";
+                    alertMessage.textContent = "Registration successful! Redirecting to login...";
+                    alertContainer.classList.remove('hidden');
+
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 1500);
+                } else {
+                    // Error
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Registration failed');
+                }
+            } catch (error) {
+                alertContainer.className = "bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm flex items-center";
+                alertIcon.className = "fas fa-exclamation-circle mr-2";
+                alertMessage.textContent = "Error: " + error.message;
+                alertContainer.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>
