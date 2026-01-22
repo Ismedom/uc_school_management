@@ -1,17 +1,17 @@
 package com.example.school_mangement_system.dto;
 
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentRequest {
+
     private String name;
     private String username;
     private String password;

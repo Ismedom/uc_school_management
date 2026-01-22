@@ -32,15 +32,5 @@ public class DataSeeder implements CommandLineRunner {
             userService.registerUser(new SignUpRequest("admin", "admin123", Role.ADMIN));
             System.out.println("Seeded Admin user");
         }
-
-        if (classRepository.count() == 0) {
-            SchoolClass grade10 = classRepository.save(SchoolClass.builder().name("Grade 10").build());
-            classRepository.save(SchoolClass.builder().name("Grade 11").build());
-            classRepository.save(SchoolClass.builder().name("Grade 12").build());
-
-            sectionRepository.save(Section.builder().name("A").schoolClass(grade10).build());
-            sectionRepository.save(Section.builder().name("B").schoolClass(grade10).build());
-            System.out.println("Seeded initial classes and sections");
-        }
     }
 }

@@ -4,12 +4,11 @@ import com.example.school_mangement_system.dto.StudentRequest;
 import com.example.school_mangement_system.dto.StudentResponse;
 import com.example.school_mangement_system.repository.SectionRepository;
 import com.example.school_mangement_system.service.StudentService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/students")
@@ -43,15 +42,15 @@ public class StudentController {
     public String showEditForm(@PathVariable Long id, Model model) {
         StudentResponse student = studentService.getStudentById(id);
         StudentRequest request = StudentRequest.builder()
-                .name(student.getName())
-                .username(student.getUsername())
-                .dob(student.getDob())
-                .gender(student.getGender())
-                .sectionId(student.getSectionId())
-                .parentContact(student.getParentContact())
-                .parentName(student.getParentName())
-                .active(student.isActive())
-                .build();
+            .name(student.getName())
+            .username(student.getUsername())
+            .dob(student.getDob())
+            .gender(student.getGender())
+            .sectionId(student.getSectionId())
+            .parentContact(student.getParentContact())
+            .parentName(student.getParentName())
+            .active(student.isActive())
+            .build();
 
         model.addAttribute("studentRequest", request);
         model.addAttribute("studentId", id);

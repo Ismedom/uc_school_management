@@ -1,0 +1,113 @@
+<!doctype html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{layout/main :: layout(~{::div#content}, ~{::title})}"
+>
+    <head>
+        <title>Create Exam - School Management System</title>
+    </head>
+
+    <body>
+        <div id="content">
+            <div class="mb-8">
+                <a
+                    th:href="@{/exams}"
+                    class="text-sm font-medium text-blue-600 hover:text-blue-500 mb-2 inline-flex items-center"
+                >
+                    <i class="fas fa-arrow-left mr-2"></i>Back to List
+                </a>
+                <h1 class="text-2xl font-bold text-gray-900">Create New Exam</h1>
+                <p class="text-gray-500 text-sm mt-1">Define an exam term or event.</p>
+            </div>
+
+            <div
+                class="bg-white rounded-xl shadow-sm border border-gray-100 max-w-2xl overflow-hidden"
+            >
+                <form
+                    th:action="@{/exams/create}"
+                    th:object="${examRequest}"
+                    method="post"
+                    class="p-8 space-y-6"
+                >
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1"
+                            >Exam Name</label
+                        >
+                        <input
+                            type="text"
+                            id="name"
+                            th:field="*{name}"
+                            placeholder="e.g., Midterm 2025"
+                            required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        />
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label
+                                for="startDate"
+                                class="block text-sm font-medium text-gray-700 mb-1"
+                                >Start Date</label
+                            >
+                            <input
+                                type="date"
+                                id="startDate"
+                                th:field="*{startDate}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            />
+                        </div>
+                        <div>
+                            <label
+                                for="endDate"
+                                class="block text-sm font-medium text-gray-700 mb-1"
+                                >End Date</label
+                            >
+                            <input
+                                type="date"
+                                id="endDate"
+                                th:field="*{endDate}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="classId" class="block text-sm font-medium text-gray-700 mb-1"
+                            >Target Class (Optional)</label
+                        >
+                        <select
+                            id="classId"
+                            th:field="*{classId}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white"
+                        >
+                            <option value="">All Classes (School-wide)</option>
+                            <option
+                                th:each="cls : ${classes}"
+                                th:value="${cls.id}"
+                                th:text="${cls.name}"
+                            >
+                                Grade 1
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="mt-8 flex justify-end space-x-4">
+                        <button
+                            type="reset"
+                            class="px-6 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                            Reset
+                        </button>
+                        <button
+                            type="submit"
+                            class="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm"
+                        >
+                            Create Exam
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

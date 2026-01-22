@@ -1,12 +1,11 @@
 package com.example.school_mangement_system.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Data
 @Builder
@@ -37,5 +36,5 @@ public class Exam {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")
     private SchoolClass schoolClass; // Optional: if null, applies to all? For now, let's say exams are per class
-                                     // structure to align with subjects.
+    // structure to align with subjects.
 }

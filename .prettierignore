@@ -1,0 +1,13 @@
+target/
+.mvn/
+mvnw
+mvnw.cmd
+.git/
+.qodo/
+.vscode/
+node_modules/
+package-lock.json
+package.json
+.env
+Dockerfile
+docker-compose.yml

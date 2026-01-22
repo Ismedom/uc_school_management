@@ -1,0 +1,118 @@
+<!doctype html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{layout/main :: layout(~{::div#content}, ~{::title})}"
+>
+    <head>
+        <title>Exams & Grades - School Management System</title>
+    </head>
+
+    <body>
+        <div id="content">
+            <div class="mb-8 flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Exams</h1>
+                    <p class="text-gray-500 text-sm mt-1">Manage exam terms and student grading.</p>
+                </div>
+                <a
+                    th:href="@{/exams/create}"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm inline-flex items-center"
+                >
+                    <i class="fas fa-plus mr-2"></i>Create New Exam
+                </a>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th
+                                    class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                                >
+                                    Exam Name
+                                </th>
+                                <th
+                                    class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                                >
+                                    Class
+                                </th>
+                                <th
+                                    class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                                >
+                                    Date Range
+                                </th>
+                                <th
+                                    class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right"
+                                >
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr
+                                th:each="exam : ${exams}"
+                                class="hover:bg-gray-50/50 transition-colors"
+                            >
+                                <td class="px-6 py-4">
+                                    <span class="font-medium text-gray-900" th:text="${exam.name}"
+                                        >Midterm 2025</span
+                                    >
+                                </td>
+                                <td
+                                    class="px-6 py-4 text-gray-500"
+                                    th:text="${exam.className ?: 'School-wide'}"
+                                >
+                                    Grade 10
+                                </td>
+                                <td class="px-6 py-4 text-gray-500">
+                                    <span th:text="${exam.startDate}">2025-01-01</span> to
+                                    <span th:text="${exam.endDate}">2025-01-15</span>
+                                </td>
+                                <td class="px-6 py-4 text-right space-x-3">
+                                    <a
+                                        th:href="@{/exams/{id}/grades(id=${exam.id})}"
+                                        class="text-green-600 hover:text-green-900 font-medium text-sm"
+                                        >Manage Grades</a
+                                    >
+                                    <a
+                                        th:href="@{/exams/edit/{id}(id=${exam.id})}"
+                                        class="text-blue-600 hover:text-blue-900 font-medium text-sm"
+                                        >Edit</a
+                                    >
+                                    <form
+                                        th:action="@{/exams/delete/{id}(id=${exam.id})}"
+                                        method="post"
+                                        class="inline"
+                                    >
+                                        <button
+                                            type="submit"
+                                            class="text-red-600 hover:text-red-900 font-medium text-sm"
+                                            onclick="
+                                                return confirm(
+                                                    'Are you sure you want to delete this exam?'
+                                                );
+                                            "
+                                        >
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(exams)}">
+                                <td colspan="4" class="px-6 py-12 text-center text-gray-500">
+                                    <div class="flex flex-col items-center">
+                                        <i class="fas fa-file-alt text-4xl mb-4 text-gray-200"></i>
+                                        <p>
+                                            No exams found. Create your first exam to start grading.
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

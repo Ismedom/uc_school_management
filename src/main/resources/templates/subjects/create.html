@@ -1,0 +1,102 @@
+<!doctype html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{layout/main :: layout(~{::div#content}, ~{::title})}"
+>
+    <head>
+        <title>Create Subject - School Management System</title>
+    </head>
+
+    <body>
+        <div id="content">
+            <div class="max-w-2xl">
+                <div class="mb-8">
+                    <a
+                        th:href="@{/subjects}"
+                        class="text-blue-600 hover:text-blue-800 text-sm font-medium inline-flex items-center"
+                    >
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Subjects
+                    </a>
+                    <h1 class="text-2xl font-bold text-gray-900 mt-4">Add New Subject</h1>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                    <form
+                        th:action="@{/subjects/create}"
+                        th:object="${subjectRequest}"
+                        method="POST"
+                        class="space-y-6"
+                    >
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1"
+                                >Subject Name</label
+                            >
+                            <input
+                                type="text"
+                                th:field="*{name}"
+                                id="name"
+                                required
+                                class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
+                                placeholder="e.g. Mathematics, Science, etc."
+                            />
+                        </div>
+
+                        <div>
+                            <label
+                                for="classId"
+                                class="block text-sm font-medium text-gray-700 mb-1"
+                                >Class</label
+                            >
+                            <select
+                                th:field="*{classId}"
+                                id="classId"
+                                required
+                                class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
+                            >
+                                <option value="">Select Class</option>
+                                <option
+                                    th:each="class : ${classes}"
+                                    th:value="${class.id}"
+                                    th:text="${class.name}"
+                                >
+                                    Grade 1
+                                </option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label
+                                for="teacherId"
+                                class="block text-sm font-medium text-gray-700 mb-1"
+                                >Teacher (Optional)</label
+                            >
+                            <select
+                                th:field="*{teacherId}"
+                                id="teacherId"
+                                class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
+                            >
+                                <option value="">Select Teacher</option>
+                                <option
+                                    th:each="teacher : ${teachers}"
+                                    th:value="${teacher.id}"
+                                    th:text="${teacher.name}"
+                                >
+                                    John Doe
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="pt-4">
+                            <button
+                                type="submit"
+                                class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-sm"
+                            >
+                                Create Subject
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

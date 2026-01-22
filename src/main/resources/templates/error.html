@@ -1,70 +1,85 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Error - School Management System</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#3b82f6',
+                            secondary: '#64748b',
+                        },
+                    },
+                },
+            };
+        </script>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Error - School Management System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#3b82f6',
-                        secondary: '#64748b',
-                    }
-                }
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
-
-<body class="bg-gray-50 flex items-center justify-center min-h-screen">
-
-    <div class="w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 text-red-600 mb-4">
-                <i class="fas fa-exclamation-triangle text-2xl"></i>
+    <body class="bg-gray-50 flex items-center justify-center min-h-screen">
+        <div class="w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
+            <div class="text-center mb-8">
+                <div
+                    class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 text-red-600 mb-4"
+                >
+                    <i class="fas fa-exclamation-triangle text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900">Oops! Something went wrong</h2>
+                <p class="text-gray-500 mt-2">We encountered an unexpected error</p>
             </div>
-            <h2 class="text-2xl font-bold text-gray-900">Oops! Something went wrong</h2>
-            <p class="text-gray-500 mt-2">We encountered an unexpected error</p>
+
+            <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
+                <div class="flex items-center mb-2">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    <span class="font-medium">Error Details</span>
+                </div>
+                <div class="text-sm space-y-1">
+                    <p>
+                        <strong>Status:</strong> <span th:text="${status}">500</span> Internal
+                        Server Error
+                    </p>
+                    <p>
+                        <strong>Type:</strong> <span th:text="${error}">Internal Server Error</span>
+                    </p>
+                    <p>
+                        <strong>Timestamp:</strong>
+                        <span th:text="${timestamp}">Mon Jan 05 23:22:59 ICT 2026</span>
+                    </p>
+                    <p th:if="${message}" class="mt-2">
+                        <strong>Message:</strong>
+                        <span th:text="${message}">There was an unexpected error</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="text-center space-y-4">
+                <p class="text-gray-600 text-sm">
+                    If this problem persists, please contact your system administrator.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <a
+                        href="/dashboard"
+                        class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
+                    >
+                        <i class="fas fa-home mr-2"></i>
+                        Go to Dashboard
+                    </a>
+                    <button
+                        onclick="window.history.back()"
+                        class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
+                    >
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Go Back
+                    </button>
+                </div>
+            </div>
         </div>
-
-        <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
-            <div class="flex items-center mb-2">
-                <i class="fas fa-exclamation-circle mr-2"></i>
-                <span class="font-medium">Error Details</span>
-            </div>
-            <div class="text-sm space-y-1">
-                <p><strong>Status:</strong> <span th:text="${status}">500</span> Internal Server Error</p>
-                <p><strong>Type:</strong> <span th:text="${error}">Internal Server Error</span></p>
-                <p><strong>Timestamp:</strong> <span th:text="${timestamp}">Mon Jan 05 23:22:59 ICT 2026</span></p>
-                <p th:if="${message}" class="mt-2"><strong>Message:</strong> <span th:text="${message}">There was an
-                        unexpected error</span></p>
-            </div>
-        </div>
-
-        <div class="text-center space-y-4">
-            <p class="text-gray-600 text-sm">
-                If this problem persists, please contact your system administrator.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                <a href="/dashboard"
-                    class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors">
-                    <i class="fas fa-home mr-2"></i>
-                    Go to Dashboard
-                </a>
-                <button onclick="window.history.back()"
-                    class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors">
-                    <i class="fas fa-arrow-left mr-2"></i>
-                    Go Back
-                </button>
-            </div>
-        </div>
-    </div>
-
-</body>
-
+    </body>
 </html>

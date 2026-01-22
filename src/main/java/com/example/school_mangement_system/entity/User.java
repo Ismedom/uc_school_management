@@ -1,10 +1,9 @@
 package com.example.school_mangement_system.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -34,11 +33,17 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public User() {
-    }
+    public User() {}
 
-    public User(Long id, String username, String password, Role role, boolean active, LocalDateTime createdAt,
-            LocalDateTime updatedAt) {
+    public User(
+        Long id,
+        String username,
+        String password,
+        Role role,
+        boolean active,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
+    ) {
         this.id = id;
         this.username = username;
         this.password = password;
