@@ -14,6 +14,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -36,11 +38,31 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers("/signup", "/login", "/")
                     .permitAll()
+                    // Admin and Super Admin can access everything
+                    .requestMatchers(
+                        "/classes/**",
+                        "/teachers/**",
+                        "/subjects/**",
+                        "/students/create",
+                        "/students/edit/**",
+                        "/students/delete/**"
+                    )
+                    .hasAnyRole("SUPER_ADMIN", "ADMIN")
+                    // Teachers can access attendance and view students
+                    .requestMatchers("/attendance/**", "/students")
+                    .hasAnyRole("SUPER_ADMIN", "ADMIN", "TEACHER")
+                    // Students can only view their own info (will be implemented later)
+                    .requestMatchers("/student/**")
+                    .hasRole("STUDENT")
                     .anyRequest()
                     .authenticated()
             )
             .formLogin(form ->
-                form.loginPage("/login").loginProcessingUrl("/login").defaultSuccessUrl("/dashboard", true).permitAll()
+                form
+                    .loginPage("/login")
+                    .loginProcessingUrl("/login")
+                    .successHandler(customAuthenticationSuccessHandler())
+                    .permitAll()
             )
             .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login?logout").permitAll())
             .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
@@ -64,5 +86,10 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
     }
 }

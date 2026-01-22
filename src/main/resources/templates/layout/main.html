@@ -59,12 +59,14 @@
                             Dashboard
                         </a>
                     </li>
+                    <!-- Admin/Super Admin and Teacher Menu Items -->
                     <li
+                        sec:authorize="hasAnyRole('SUPER_ADMIN', 'ADMIN', 'TEACHER')"
                         class="pt-4 pb-2 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider"
                     >
                         Management
                     </li>
-                    <li>
+                    <li sec:authorize="hasAnyRole('SUPER_ADMIN', 'ADMIN')">
                         <a
                             href="/students"
                             th:class="${currentUri != null && #strings.startsWith(currentUri, '/students') ? 'flex items-center px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium' : 'flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors'}"
@@ -74,7 +76,7 @@
                             Students
                         </a>
                     </li>
-                    <li>
+                    <li sec:authorize="hasAnyRole('SUPER_ADMIN', 'ADMIN')">
                         <a
                             href="/teachers"
                             th:class="${currentUri != null && #strings.startsWith(currentUri, '/teachers') ? 'flex items-center px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium' : 'flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors'}"
@@ -84,7 +86,7 @@
                             Teachers
                         </a>
                     </li>
-                    <li>
+                    <li sec:authorize="hasAnyRole('SUPER_ADMIN', 'ADMIN')">
                         <a
                             href="/classes"
                             th:class="${currentUri != null && (#strings.startsWith(currentUri, '/classes') || #strings.startsWith(currentUri, '/subjects')) ? 'flex items-center px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium' : 'flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors'}"
@@ -95,11 +97,12 @@
                         </a>
                     </li>
                     <li
+                        sec:authorize="hasAnyRole('SUPER_ADMIN', 'ADMIN', 'TEACHER')"
                         class="pt-4 pb-2 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider"
                     >
                         Academic
                     </li>
-                    <li>
+                    <li sec:authorize="hasAnyRole('SUPER_ADMIN', 'ADMIN', 'TEACHER')">
                         <a
                             href="/attendance"
                             th:class="${currentUri != null && #strings.startsWith(currentUri, '/attendance') ? 'flex items-center px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium' : 'flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors'}"
@@ -109,7 +112,7 @@
                             Attendance
                         </a>
                     </li>
-                    <li>
+                    <li sec:authorize="hasAnyRole('SUPER_ADMIN', 'ADMIN', 'TEACHER')">
                         <a
                             href="/exams"
                             th:class="${currentUri != null && #strings.startsWith(currentUri, '/exams') ? 'flex items-center px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium' : 'flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors'}"
@@ -117,6 +120,44 @@
                         >
                             <i class="fas fa-file-alt w-6 text-center mr-2"></i>
                             Exams & Grades
+                        </a>
+                    </li>
+
+                    <!-- Student Menu Items -->
+                    <li
+                        sec:authorize="hasRole('STUDENT')"
+                        class="pt-4 pb-2 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider"
+                    >
+                        My Academic
+                    </li>
+                    <li sec:authorize="hasRole('STUDENT')">
+                        <a
+                            href="/student/profile"
+                            th:class="${currentUri == '/student/profile' ? 'flex items-center px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium' : 'flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors'}"
+                            class="flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                        >
+                            <i class="fas fa-user w-6 text-center mr-2"></i>
+                            My Profile
+                        </a>
+                    </li>
+                    <li sec:authorize="hasRole('STUDENT')">
+                        <a
+                            href="/student/grades"
+                            th:class="${currentUri == '/student/grades' ? 'flex items-center px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium' : 'flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors'}"
+                            class="flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                        >
+                            <i class="fas fa-chart-line w-6 text-center mr-2"></i>
+                            My Grades
+                        </a>
+                    </li>
+                    <li sec:authorize="hasRole('STUDENT')">
+                        <a
+                            href="/student/attendance"
+                            th:class="${currentUri == '/student/attendance' ? 'flex items-center px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium' : 'flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors'}"
+                            class="flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                        >
+                            <i class="fas fa-calendar-check w-6 text-center mr-2"></i>
+                            My Attendance
                         </a>
                     </li>
                 </ul>

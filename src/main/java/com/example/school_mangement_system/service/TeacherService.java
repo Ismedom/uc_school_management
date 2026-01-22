@@ -36,11 +36,8 @@ public class TeacherService {
     public void createTeacher(TeacherRequest request) {
         // Create User for login
         User user = new User();
-        // Generate a default username (e.g., email or first name part)
-        // Ideally this should be more robust or input by admin, but let's use email for
-        // now
-        user.setUsername(request.getEmail());
-        user.setPassword(passwordEncoder.encode("teacher123")); // Default password
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.TEACHER);
         user.setActive(true);
         user.setCreatedAt(LocalDateTime.now());

@@ -1,0 +1,120 @@
+<!doctype html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{layout/main :: layout(~{::div#content}, ~{::title})}"
+>
+    <head>
+        <title>Student Dashboard - School Management System</title>
+    </head>
+
+    <body>
+        <div id="content">
+            <div class="mb-8 flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Student Dashboard</h1>
+                    <p class="text-gray-500 text-sm mt-1">
+                        Welcome back, <span th:text="${#authentication.name}">Student</span>!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Student Info Card -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">My Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <div class="text-blue-600 text-sm font-medium">Name</div>
+                        <div class="text-blue-900 font-semibold" th:text="${student.name}">
+                            John Doe
+                        </div>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <div class="text-green-600 text-sm font-medium">Class</div>
+                        <div
+                            class="text-green-900 font-semibold"
+                            th:text="${student.section.schoolClass.name + ' - ' + student.section.name}"
+                        >
+                            Grade 10 - A
+                        </div>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <div class="text-purple-600 text-sm font-medium">Status</div>
+                        <div
+                            class="text-purple-900 font-semibold"
+                            th:text="${student.active ? 'Active' : 'Inactive'}"
+                        >
+                            Active
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Recent Attendance -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Recent Attendance</h3>
+                    <div class="space-y-4">
+                        <div
+                            th:each="record : ${recentAttendance}"
+                            class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0"
+                        >
+                            <div>
+                                <div
+                                    class="font-medium text-gray-900"
+                                    th:text="${#temporals.format(record.date, 'MMM dd, yyyy')}"
+                                >
+                                    Jan 15, 2024
+                                </div>
+                                <div class="text-sm text-gray-500" th:text="${record.status}">
+                                    Present
+                                </div>
+                            </div>
+                            <div
+                                th:class="${record.status == 'PRESENT' ? 'text-green-600' : record.status == 'ABSENT' ? 'text-red-600' : 'text-yellow-600'}"
+                            >
+                                <i
+                                    th:class="${record.status == 'PRESENT' ? 'fas fa-check-circle' : record.status == 'ABSENT' ? 'fas fa-times-circle' : 'fas fa-exclamation-circle'}"
+                                ></i>
+                            </div>
+                        </div>
+                        <div
+                            th:if="${#lists.isEmpty(recentAttendance)}"
+                            class="text-center text-gray-500 py-8"
+                        >
+                            <i class="fas fa-calendar-alt text-4xl mb-4 text-gray-200"></i>
+                            <p>No attendance records yet</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <a
+                            href="/student/profile"
+                            class="flex items-center p-3 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors"
+                        >
+                            <i class="fas fa-user mr-3"></i>
+                            View Profile
+                        </a>
+                        <a
+                            href="/student/grades"
+                            class="flex items-center p-3 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors"
+                        >
+                            <i class="fas fa-chart-line mr-3"></i>
+                            View Grades
+                        </a>
+                        <a
+                            href="/student/attendance"
+                            class="flex items-center p-3 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
+                        >
+                            <i class="fas fa-calendar-check mr-3"></i>
+                            Attendance History
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

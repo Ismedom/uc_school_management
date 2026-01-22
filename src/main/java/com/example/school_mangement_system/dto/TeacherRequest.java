@@ -15,4 +15,6 @@ public class TeacherRequest {
     private String email;
     private String phone;
     private String qualification;
+    private String username;
+    private String password;
 }
