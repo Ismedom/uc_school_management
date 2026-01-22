@@ -6,6 +6,7 @@ import com.example.school_mangement_system.entity.SchoolClass;
 import com.example.school_mangement_system.entity.Section;
 import com.example.school_mangement_system.repository.SchoolClassRepository;
 import com.example.school_mangement_system.repository.SectionRepository;
+import com.example.school_mangement_system.repository.StudentRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class SchoolClassService {
 
     private final SchoolClassRepository schoolClassRepository;
     private final SectionRepository sectionRepository;
+    private final StudentRepository studentRepository;
 
     public List<SchoolClassResponse> getAllClasses() {
         return schoolClassRepository.findAll().stream().map(this::mapToResponse).collect(Collectors.toList());
@@ -60,9 +62,20 @@ public class SchoolClassService {
             var existingSections = sectionRepository.findBySchoolClassId(id);
             var existingSectionNames = existingSections.stream().map(Section::getName).toList();
 
-            // Remove sections that are no longer in the request
+            // Check for sections that would be deleted but have students
             for (var section : existingSections) {
                 if (!request.getSectionNames().contains(section.getName())) {
+                    // Check if section has students
+                    long studentCount = studentRepository.countBySectionId(section.getId());
+                    if (studentCount > 0) {
+                        throw new RuntimeException(
+                            "Cannot delete section '" +
+                                section.getName() +
+                                "' because it has " +
+                                studentCount +
+                                " student(s) assigned. Please reassign students first."
+                        );
+                    }
                     sectionRepository.delete(section);
                 }
             }

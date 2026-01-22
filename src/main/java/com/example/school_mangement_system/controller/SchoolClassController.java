@@ -55,8 +55,18 @@ public class SchoolClassController {
 
     @PostMapping("/edit/{id}")
     public String updateClass(@PathVariable Long id, @ModelAttribute SchoolClassRequest request) {
-        schoolClassService.updateClass(id, request);
-        return "redirect:/classes";
+        try {
+            schoolClassService.updateClass(id, request);
+            return "redirect:/classes";
+        } catch (RuntimeException e) {
+            // Redirect back with error message
+            return (
+                "redirect:/classes/edit/" +
+                id +
+                "?error=" +
+                java.net.URLEncoder.encode(e.getMessage(), java.nio.charset.StandardCharsets.UTF_8)
+            );
+        }
     }
 
     @PostMapping("/delete/{id}")

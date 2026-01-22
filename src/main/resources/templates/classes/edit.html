@@ -21,6 +21,16 @@
                 </div>
 
                 <div
+                    th:if="${param.error}"
+                    class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg"
+                >
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-triangle mr-3"></i>
+                        <span th:text="${param.error}">Error message</span>
+                    </div>
+                </div>
+
+                <div
                     class="bg-white rounded-xl shadow-sm border border-gray-100 p-8"
                     th:data-section-count="${existingSections.size()}"
                 >

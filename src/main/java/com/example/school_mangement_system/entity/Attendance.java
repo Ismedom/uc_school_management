@@ -25,14 +25,9 @@ public class Attendance {
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    // Attendance can be per class or per section generally.
-    // If it's daily attendance (present/absent/late) it's usually once per day for
-    // the student's section.
-    // If it's per subject, that's different.
-    // Requirement says: "Daily attendance (students)", "Mark: Present / Absent /
-    // Late".
-    // "Attendance history per student". "Monthly summary".
-    // Implications: Daily attendance.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id", nullable = false)
+    private Subject subject;
 
     @Column(nullable = false)
     private LocalDate date;

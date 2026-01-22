@@ -4,8 +4,10 @@ import com.example.school_mangement_system.dto.AttendanceBulkRequest;
 import com.example.school_mangement_system.dto.AttendanceResponse;
 import com.example.school_mangement_system.entity.Attendance;
 import com.example.school_mangement_system.entity.Student;
+import com.example.school_mangement_system.entity.Subject;
 import com.example.school_mangement_system.repository.AttendanceRepository;
 import com.example.school_mangement_system.repository.StudentRepository;
+import com.example.school_mangement_system.repository.SubjectRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,13 +21,20 @@ public class AttendanceService {
 
     private final AttendanceRepository attendanceRepository;
     private final StudentRepository studentRepository;
+    private final SubjectRepository subjectRepository;
 
-    public List<AttendanceResponse> getAttendanceBySectionAndDate(Long sectionId, LocalDate date) {
+    public List<AttendanceResponse> getAttendanceBySectionAndSubjectAndDate(
+        Long sectionId,
+        Long subjectId,
+        LocalDate date
+    ) {
         List<Student> students = studentRepository.findBySectionId(sectionId);
         return students
             .stream()
             .map(student -> {
-                Attendance attendance = attendanceRepository.findByStudentIdAndDate(student.getId(), date).orElse(null);
+                Attendance attendance = attendanceRepository
+                    .findByStudentIdAndSubjectIdAndDate(student.getId(), subjectId, date)
+                    .orElse(null);
                 return AttendanceResponse.builder()
                     .studentId(student.getId())
                     .studentName(student.getName())
@@ -33,6 +42,7 @@ public class AttendanceService {
                     .status(attendance != null ? attendance.getStatus() : null)
                     .remarks(attendance != null ? attendance.getRemarks() : null)
                     .id(attendance != null ? attendance.getId() : null)
+                    .subjectId(subjectId)
                     .build();
             })
             .collect(Collectors.toList());
@@ -42,7 +52,7 @@ public class AttendanceService {
     public void saveBulkAttendance(AttendanceBulkRequest request) {
         for (AttendanceBulkRequest.StudentAttendanceRequest record : request.getRecords()) {
             Attendance attendance = attendanceRepository
-                .findByStudentIdAndDate(record.getStudentId(), request.getDate())
+                .findByStudentIdAndSubjectIdAndDate(record.getStudentId(), request.getSubjectId(), request.getDate())
                 .orElse(new Attendance());
 
             if (attendance.getId() == null) {
@@ -50,6 +60,11 @@ public class AttendanceService {
                     .findById(record.getStudentId())
                     .orElseThrow(() -> new RuntimeException("Student not found"));
                 attendance.setStudent(student);
+                attendance.setSubject(
+                    subjectRepository
+                        .findById(request.getSubjectId())
+                        .orElseThrow(() -> new RuntimeException("Subject not found"))
+                );
                 attendance.setDate(request.getDate());
             }
 
@@ -67,11 +82,33 @@ public class AttendanceService {
             .collect(Collectors.toList());
     }
 
+    public List<AttendanceResponse> getAttendanceBySectionAndSubjectAndDateRange(
+        Long sectionId,
+        Long subjectId,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+        List<Student> students = studentRepository.findBySectionId(sectionId);
+        return attendanceRepository
+            .findAll()
+            .stream()
+            .filter(
+                attendance ->
+                    attendance.getStudent().getSection().getId().equals(sectionId) &&
+                    attendance.getSubject().getId().equals(subjectId) &&
+                    !attendance.getDate().isBefore(startDate) &&
+                    !attendance.getDate().isAfter(endDate)
+            )
+            .map(this::mapToResponse)
+            .collect(Collectors.toList());
+    }
+
     private AttendanceResponse mapToResponse(Attendance attendance) {
         return AttendanceResponse.builder()
             .id(attendance.getId())
             .studentId(attendance.getStudent().getId())
             .studentName(attendance.getStudent().getName())
+            .subjectId(attendance.getSubject().getId())
             .date(attendance.getDate())
             .status(attendance.getStatus())
             .remarks(attendance.getRemarks())

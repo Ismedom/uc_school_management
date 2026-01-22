@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class AttendanceBulkRequest {
 
     private Long sectionId;
+    private Long subjectId;
     private LocalDate date;
     private List<StudentAttendanceRequest> records;
 

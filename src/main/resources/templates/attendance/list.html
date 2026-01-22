@@ -1,0 +1,190 @@
+<!doctype html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{layout/main :: layout(~{::div#content}, ~{::title})}"
+>
+    <head>
+        <title>Attendance Records - School Management System</title>
+    </head>
+
+    <body>
+        <div id="content">
+            <div class="mb-8 flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Attendance Records</h1>
+                    <p class="text-gray-500 text-sm mt-1">
+                        View and filter attendance records by section, subject, and date range.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Filter Form -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
+                <form
+                    th:action="@{/attendance/list}"
+                    method="GET"
+                    class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end"
+                >
+                    <div>
+                        <label for="sectionId" class="block text-sm font-medium text-gray-700 mb-2"
+                            >Section</label
+                        >
+                        <select
+                            name="sectionId"
+                            id="sectionId"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            th:value="${selectedSectionId}"
+                        >
+                            <option value="">All Sections</option>
+                            <option
+                                th:each="sec : ${sections}"
+                                th:value="${sec.id}"
+                                th:text="|${sec.schoolClass.name} - ${sec.name}|"
+                                th:selected="${sec.id == selectedSectionId}"
+                            ></option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="subjectId" class="block text-sm font-medium text-gray-700 mb-2"
+                            >Subject</label
+                        >
+                        <select
+                            name="subjectId"
+                            id="subjectId"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            th:value="${selectedSubjectId}"
+                        >
+                            <option value="">All Subjects</option>
+                            <option
+                                th:each="subject : ${subjects}"
+                                th:value="${subject.id}"
+                                th:text="${subject.name}"
+                                th:selected="${subject.id == selectedSubjectId}"
+                            ></option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="startDate" class="block text-sm font-medium text-gray-700 mb-2"
+                            >Start Date</label
+                        >
+                        <input
+                            type="date"
+                            name="startDate"
+                            id="startDate"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            th:value="${startDate}"
+                        />
+                    </div>
+
+                    <div>
+                        <label for="endDate" class="block text-sm font-medium text-gray-700 mb-2"
+                            >End Date</label
+                        >
+                        <input
+                            type="date"
+                            name="endDate"
+                            id="endDate"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                            th:value="${endDate}"
+                        />
+                    </div>
+
+                    <div>
+                        <button
+                            type="submit"
+                            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                            <i class="fas fa-search mr-2"></i>Filter
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Table -->
+            <div
+                th:if="${attendanceRecords != null}"
+                class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+            >
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">Attendance Records</h3>
+                    <p class="text-sm text-gray-500" th:if="${attendanceRecords.size() > 0}">
+                        Found <span th:text="${attendanceRecords.size()}">0</span> records
+                    </p>
+                </div>
+
+                <div th:if="${attendanceRecords.size() > 0}" class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b border-gray-200">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                >
+                                    Date
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                >
+                                    Student
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                >
+                                    Status
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                >
+                                    Remarks
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr th:each="record : ${attendanceRecords}" class="hover:bg-gray-50">
+                                <td
+                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                    th:text="${#temporals.format(record.date, 'MMM dd, yyyy')}"
+                                ></td>
+                                <td
+                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                    th:text="${record.studentName}"
+                                ></td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span
+                                        th:class="${record.status == 'PRESENT' ? 'inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800' :
+                                                   record.status == 'ABSENT' ? 'inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800' :
+                                                   'inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800'}"
+                                        th:text="${record.status}"
+                                    ></span>
+                                </td>
+                                <td
+                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                    th:text="${record.remarks != null ? record.remarks : '-'}"
+                                ></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div th:if="${attendanceRecords.size() == 0}" class="px-6 py-12 text-center">
+                    <i class="fas fa-calendar-alt text-4xl text-gray-200 mb-4"></i>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No Records Found</h3>
+                    <p class="text-gray-500">No attendance records match your filter criteria.</p>
+                </div>
+            </div>
+
+            <!-- Initial State -->
+            <div
+                th:if="${attendanceRecords == null}"
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center"
+            >
+                <i class="fas fa-filter text-4xl text-gray-200 mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Filter Attendance Records</h3>
+                <p class="text-gray-500">
+                    Select section, subject, and date range to view attendance records.
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

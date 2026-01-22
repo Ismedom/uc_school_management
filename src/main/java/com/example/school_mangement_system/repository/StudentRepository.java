@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
     java.util.List<Student> findBySectionId(Long sectionId);
+    long countBySectionId(Long sectionId);
 }

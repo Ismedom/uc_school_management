@@ -16,6 +16,7 @@ public class AttendanceResponse {
     private Long id;
     private Long studentId;
     private String studentName;
+    private Long subjectId;
     private LocalDate date;
     private AttendanceStatus status;
     private String remarks;

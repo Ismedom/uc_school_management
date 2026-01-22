@@ -173,7 +173,8 @@ class SchoolClassServiceTest {
 
     private final SchoolClassRepository repo = mock(SchoolClassRepository.class);
     private final SectionRepository sectionRepo = mock(SectionRepository.class);
-    private final SchoolClassService service = new SchoolClassService(repo, sectionRepo);
+    private final StudentRepository studentRepo = mock(StudentRepository.class);
+    private final SchoolClassService service = new SchoolClassService(repo, sectionRepo, studentRepo);
 
     @Test
     void createAndUpdateAndDelete() {
@@ -218,7 +219,12 @@ class AttendanceServiceTest {
 
     private final AttendanceRepository attendanceRepository = mock(AttendanceRepository.class);
     private final StudentRepository studentRepository = mock(StudentRepository.class);
-    private final AttendanceService service = new AttendanceService(attendanceRepository, studentRepository);
+    private final SubjectRepository subjectRepository = mock(SubjectRepository.class);
+    private final AttendanceService service = new AttendanceService(
+        attendanceRepository,
+        studentRepository,
+        subjectRepository
+    );
 
     @Test
     void getAttendanceBySectionAndDate_mapsExistingAndNulls() {

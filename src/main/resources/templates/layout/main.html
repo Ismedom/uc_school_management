@@ -105,11 +105,21 @@
                     <li sec:authorize="hasAnyRole('SUPER_ADMIN', 'ADMIN', 'TEACHER')">
                         <a
                             href="/attendance"
-                            th:class="${currentUri != null && #strings.startsWith(currentUri, '/attendance') ? 'flex items-center px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium' : 'flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors'}"
+                            th:class="${currentUri == '/attendance' ? 'flex items-center px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium' : 'flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors'}"
                             class="flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
                         >
-                            <i class="fas fa-calendar-check w-6 text-center mr-2"></i>
-                            Attendance
+                            <i class="fas fa-calendar-plus w-6 text-center mr-2"></i>
+                            Mark Attendance
+                        </a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('SUPER_ADMIN', 'ADMIN', 'TEACHER')">
+                        <a
+                            href="/attendance/list"
+                            th:class="${currentUri == '/attendance/list' ? 'flex items-center px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium' : 'flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors'}"
+                            class="flex items-center px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                        >
+                            <i class="fas fa-list w-6 text-center mr-2"></i>
+                            Attendance Records
                         </a>
                     </li>
                     <li sec:authorize="hasAnyRole('SUPER_ADMIN', 'ADMIN', 'TEACHER')">
