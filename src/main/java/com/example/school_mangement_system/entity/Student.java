@@ -34,7 +34,7 @@ public class Student {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "section_id")
-    private Section section; // Implicitly contains Class info
+    private Section section;
 
     private String parentContact;
     private String parentName;

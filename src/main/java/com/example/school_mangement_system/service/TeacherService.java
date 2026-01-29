@@ -34,7 +34,6 @@ public class TeacherService {
 
     @Transactional
     public void createTeacher(TeacherRequest request) {
-        // Create User for login
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -45,7 +44,6 @@ public class TeacherService {
 
         userRepository.save(user);
 
-        // Create Teacher profile
         Teacher teacher = Teacher.builder()
             .name(request.getName())
             .email(request.getEmail())
@@ -66,8 +64,6 @@ public class TeacherService {
         teacher.setPhone(request.getPhone());
         teacher.setQualification(request.getQualification());
 
-        // Update associated user email/username if needed?
-        // For simplicity, keeping username as original email or handling separately.
         if (teacher.getUser() != null) {
             teacher.getUser().setUsername(request.getEmail());
             userRepository.save(teacher.getUser());
@@ -80,10 +76,6 @@ public class TeacherService {
     public void deleteTeacher(Long id) {
         Teacher teacher = teacherRepository.findById(id).orElseThrow(() -> new RuntimeException("Teacher not found"));
 
-        // Cascading delete might handle User if configured, but explicit is safer for
-        // now
-        // JPA CascadeType.ALL on Teacher.user means deleting teacher deletes user?
-        // Let's check Teacher entity.
         teacherRepository.delete(teacher);
     }
 

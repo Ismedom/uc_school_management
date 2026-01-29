@@ -70,7 +70,6 @@ public class ExamController {
         return "redirect:/exams";
     }
 
-    // Grading routes
     @GetMapping("/{examId}/grades")
     public String showGradeSelection(
         @PathVariable Long examId,
@@ -92,7 +91,6 @@ public class ExamController {
 
             List<MarksResponse> existingMarks = marksService.getMarksByExamAndSubject(examId, subjectId);
 
-            // Build the bulk request
             MarksBulkRequest bulkRequest = new MarksBulkRequest();
             bulkRequest.setExamId(examId);
             bulkRequest.setSubjectId(subjectId);
@@ -132,7 +130,7 @@ public class ExamController {
 
             bulkRequest.setMarks(marksRequests);
             model.addAttribute("bulkRequest", bulkRequest);
-            model.addAttribute("studentsList", students); // for displaying names
+            model.addAttribute("studentsList", students);
         }
 
         return "exams/grades";

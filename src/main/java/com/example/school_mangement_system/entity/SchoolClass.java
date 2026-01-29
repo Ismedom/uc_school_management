@@ -23,7 +23,7 @@ public class SchoolClass {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String name; // e.g., "Grade 1"
+    private String name;
 
     @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL)
     private List<Section> sections;

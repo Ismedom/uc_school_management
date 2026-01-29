@@ -29,5 +29,4 @@ public class Teacher {
     private String phone;
     private String qualification;
 
-    // Availability/Workload could be added here
 }

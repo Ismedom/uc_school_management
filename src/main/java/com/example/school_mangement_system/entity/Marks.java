@@ -36,9 +36,9 @@ public class Marks {
     @Column(nullable = false)
     private Double marksObtained;
 
-    private Double maxMarks; // e.g., 100
+    private Double maxMarks;
 
-    private String grade; // Auto-calculate logic will reside in Service.
+    private String grade;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

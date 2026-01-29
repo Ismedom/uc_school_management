@@ -50,6 +50,7 @@
 
             <form th:action="@{/attendance/mark}" th:object="${bulkRequest}" method="POST">
                 <input type="hidden" th:field="*{sectionId}" />
+                <input type="hidden" th:field="*{subjectId}" />
                 <input type="hidden" th:field="*{date}" />
 
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">

@@ -30,8 +30,6 @@ public class Announcement {
     @JoinColumn(name = "class_id")
     private SchoolClass schoolClass;
 
-    // If null, it's School-wide. "School-wide announcements", "Class-specific
-    // notices".
 
     @CreationTimestamp
     private LocalDateTime createdAt;

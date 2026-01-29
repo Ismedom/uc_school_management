@@ -33,11 +33,21 @@ public class AttendanceController {
 
     @GetMapping("/mark")
     public String markAttendance(
-        @RequestParam Long sectionId,
-        @RequestParam Long subjectId,
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+        @RequestParam(required = false) Long sectionId,
+        @RequestParam(required = false) Long subjectId,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
         Model model
     ) {
+        if (sectionId == null || subjectId == null || date == null) {
+            return (
+                "redirect:/attendance?error=" +
+                java.net.URLEncoder.encode(
+                    "Please select section, subject, and date.",
+                    java.nio.charset.StandardCharsets.UTF_8
+                )
+            );
+        }
+
         List<AttendanceResponse> records = attendanceService.getAttendanceBySectionAndSubjectAndDate(
             sectionId,
             subjectId,

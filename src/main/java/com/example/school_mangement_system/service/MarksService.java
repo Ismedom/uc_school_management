@@ -27,9 +27,6 @@ public class MarksService {
     private final SubjectRepository subjectRepository;
 
     public List<MarksResponse> getMarksByExamAndSubject(Long examId, Long subjectId) {
-        // This is a custom query we might need to add to repository,
-        // but for now we filter in memory or update repository.
-        // Let's assume we want to view all marks for a specific exam and subject.
         return marksRepository
             .findAll()
             .stream()
@@ -52,7 +49,6 @@ public class MarksService {
                 .findById(markReq.getStudentId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
-            // Check if mark already exists for update
             Marks marks = marksRepository
                 .findAll()
                 .stream()

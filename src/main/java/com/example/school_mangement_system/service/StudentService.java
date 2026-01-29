@@ -83,7 +83,6 @@ public class StudentService {
             student.setSection(section);
         }
 
-        // Update user if needed (e.g., active status)
         User user = student.getUser();
         user.setActive(request.isActive());
         userRepository.save(user);

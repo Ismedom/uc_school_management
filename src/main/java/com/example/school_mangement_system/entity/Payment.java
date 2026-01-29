@@ -38,13 +38,8 @@ public class Payment {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private PaymentMethod method; // CASH, CARD, ONLINE
+    private PaymentMethod method;
 
-    // Status (Partial, Paid) is usually calculated: Fee Amount - Total Payments.
-    // Or we can store it on a "Due" record.
-    // "Payment Status: Paid / Partial / Due".
-    // Simpler approach for MVP: Dynamic calculation or a "StudentFeeStatus" entity.
-    // Let's stick to simple Payment recording.
 
     @CreationTimestamp
     private LocalDateTime createdAt;

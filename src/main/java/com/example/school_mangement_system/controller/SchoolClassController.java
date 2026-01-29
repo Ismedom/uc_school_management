@@ -41,7 +41,6 @@ public class SchoolClassController {
         var classResponse = schoolClassService.getClassById(id);
         List<Section> sections = sectionRepository.findBySchoolClassId(id);
 
-        // Create request object with existing data
         var classRequest = SchoolClassRequest.builder()
             .name(classResponse.getName())
             .sectionNames(sections.stream().map(Section::getName).toList())
@@ -59,7 +58,6 @@ public class SchoolClassController {
             schoolClassService.updateClass(id, request);
             return "redirect:/classes";
         } catch (RuntimeException e) {
-            // Redirect back with error message
             return (
                 "redirect:/classes/edit/" +
                 id +

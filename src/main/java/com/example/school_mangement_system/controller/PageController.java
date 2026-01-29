@@ -50,7 +50,6 @@ public class PageController {
         String username = authentication.getName();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Find student by user
         Student student = studentRepository
             .findAll()
             .stream()
@@ -59,7 +58,6 @@ public class PageController {
             .orElseThrow(() -> new RuntimeException("Student not found"));
 
         model.addAttribute("student", student);
-        // For now, we'll show empty attendance - you can implement attendance fetching later
         model.addAttribute("recentAttendance", List.of());
 
         return "student/dashboard";

@@ -22,7 +22,7 @@ public class Section {
     private Long id;
 
     @Column(nullable = false)
-    private String name; // e.g., "A", "B"
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id", nullable = false)

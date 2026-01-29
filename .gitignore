@@ -31,7 +31,8 @@ build/
 node_modules
 
 ### VS Code ###
-.vscode/
-*/rule.txt
+rule.txt
 ### Environment ###
 .env
+scripts/
+.qodo/

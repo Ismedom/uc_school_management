@@ -1,0 +1,6 @@
+{
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.configuration.updateBuildConfiguration": "disabled",
+    "github.gitAuthentication": false,
+    "git.terminalAuthentication": false
+}

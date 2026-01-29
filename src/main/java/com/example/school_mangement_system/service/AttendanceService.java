@@ -4,7 +4,6 @@ import com.example.school_mangement_system.dto.AttendanceBulkRequest;
 import com.example.school_mangement_system.dto.AttendanceResponse;
 import com.example.school_mangement_system.entity.Attendance;
 import com.example.school_mangement_system.entity.Student;
-import com.example.school_mangement_system.entity.Subject;
 import com.example.school_mangement_system.repository.AttendanceRepository;
 import com.example.school_mangement_system.repository.StudentRepository;
 import com.example.school_mangement_system.repository.SubjectRepository;
@@ -43,6 +42,24 @@ public class AttendanceService {
                     .remarks(attendance != null ? attendance.getRemarks() : null)
                     .id(attendance != null ? attendance.getId() : null)
                     .subjectId(subjectId)
+                    .build();
+            })
+            .collect(Collectors.toList());
+    }
+
+    public List<AttendanceResponse> getAttendanceBySectionAndDate(Long sectionId, LocalDate date) {
+        List<Student> students = studentRepository.findBySectionId(sectionId);
+        return students
+            .stream()
+            .map(student -> {
+                Attendance attendance = attendanceRepository.findByStudentIdAndDate(student.getId(), date).orElse(null);
+                return AttendanceResponse.builder()
+                    .studentId(student.getId())
+                    .studentName(student.getName())
+                    .date(date)
+                    .status(attendance != null ? attendance.getStatus() : null)
+                    .remarks(attendance != null ? attendance.getRemarks() : null)
+                    .id(attendance != null ? attendance.getId() : null)
                     .build();
             })
             .collect(Collectors.toList());

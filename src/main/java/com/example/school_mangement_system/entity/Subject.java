@@ -19,7 +19,7 @@ public class Subject {
     private Long id;
 
     @Column(nullable = false)
-    private String name; // e.g., "Mathematics"
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id", nullable = false)

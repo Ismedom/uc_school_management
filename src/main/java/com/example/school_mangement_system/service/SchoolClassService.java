@@ -37,7 +37,6 @@ public class SchoolClassService {
         SchoolClass schoolClass = SchoolClass.builder().name(request.getName()).build();
         schoolClass = schoolClassRepository.save(schoolClass);
 
-        // Create sections if provided
         if (request.getSectionNames() != null && !request.getSectionNames().isEmpty()) {
             for (String sectionName : request.getSectionNames()) {
                 if (sectionName != null && !sectionName.trim().isEmpty()) {
@@ -56,16 +55,12 @@ public class SchoolClassService {
         schoolClass.setName(request.getName());
         schoolClass = schoolClassRepository.save(schoolClass);
 
-        // Handle section updates
         if (request.getSectionNames() != null) {
-            // Get existing sections
             var existingSections = sectionRepository.findBySchoolClassId(id);
             var existingSectionNames = existingSections.stream().map(Section::getName).toList();
 
-            // Check for sections that would be deleted but have students
             for (var section : existingSections) {
                 if (!request.getSectionNames().contains(section.getName())) {
-                    // Check if section has students
                     long studentCount = studentRepository.countBySectionId(section.getId());
                     if (studentCount > 0) {
                         throw new RuntimeException(
@@ -80,7 +75,6 @@ public class SchoolClassService {
                 }
             }
 
-            // Add new sections
             for (String sectionName : request.getSectionNames()) {
                 if (
                     sectionName != null &&

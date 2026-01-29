@@ -38,7 +38,6 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers("/signup", "/login", "/")
                     .permitAll()
-                    // Admin and Super Admin can access everything
                     .requestMatchers(
                         "/classes/**",
                         "/teachers/**",
@@ -48,10 +47,8 @@ public class SecurityConfig {
                         "/students/delete/**"
                     )
                     .hasAnyRole("SUPER_ADMIN", "ADMIN")
-                    // Teachers can access attendance and view students
                     .requestMatchers("/attendance/**", "/students")
                     .hasAnyRole("SUPER_ADMIN", "ADMIN", "TEACHER")
-                    // Students can only view their own info (will be implemented later)
                     .requestMatchers("/student/**")
                     .hasRole("STUDENT")
                     .anyRequest()

@@ -16,7 +16,6 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         HttpServletResponse response,
         Authentication authentication
     ) throws IOException, ServletException {
-        // Get user roles
         for (GrantedAuthority authority : authentication.getAuthorities()) {
             String role = authority.getAuthority();
 
